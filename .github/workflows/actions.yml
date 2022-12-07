@@ -21,7 +21,7 @@ jobs:
     #  fail-fast: false #if set to true, GitHub will cancel all in-progress and queued jobs if any job in the matrix fails.
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
         with:
           #ref: ${{ github.ref }}
 	  ref: ${{ github.event.pull_request.head.sha }} 
