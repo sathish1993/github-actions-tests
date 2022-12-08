@@ -29,7 +29,7 @@ jobs:
         run: |
           CODE=`curl --http1.1  --request GET --url 'https://03f9-2603-8080-1ef0-81f0-5024-8e6f-6a29-1618.ngrok.io/connect/v1/schema/table/score/domain/3?name=org.entities.Department' --header 'Authorization : Bearer ${{ secrets.SCHEMATA_TOKEN }}' --header 'Content-Type: application/json'`
           
-          if [ $CODE!="200" ]
+          if [ $CODE!="200" ];
           then
               echo "FAILURE"
           else
