@@ -32,6 +32,7 @@ jobs:
           if [ "$CODE"!="200" ];
           then
               echo "FAILURE"
+              core.setFailed('Got invalid response from score computation')
           else
               echo "SUCCESS"
           fi
