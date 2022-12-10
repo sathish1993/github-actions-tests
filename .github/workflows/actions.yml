@@ -36,7 +36,8 @@ jobs:
               echo "error with curl..."
               exit 500
           else
-              SCORE=`echo $CODE | jq .entity`	
+              SCORE=`echo $CODE | jq .entity`
+              echo $SCORE
               if [ "$SCORE" -gt 60 ];
               then	
                  echo "SCHEMATA SCORE $SCORE is good. "
