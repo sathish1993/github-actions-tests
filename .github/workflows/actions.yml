@@ -43,7 +43,7 @@ jobs:
                  echo "SCHEMATA SCORE $SCORE is good. "
                  exit 0
               else
-                 echo "SCHEMATA SCORE $SCORA is poor. Change not recommended"
+                 echo "SCHEMATA SCORE $SCORE is poor. Change not recommended."
                  exit 500
               fi
           fi
