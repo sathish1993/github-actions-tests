@@ -44,5 +44,5 @@ jobs:
               else
                  echo "SCHEMATA SCORE $SCORA is poor. Change not recommended"
                  exit 500
-              fi	
+              fi
           fi
