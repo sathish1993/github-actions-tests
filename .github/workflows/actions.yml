@@ -3,37 +3,62 @@
 name: "SchemataLabs"
 # run once in 24 hours or pull event to main
 on:
-  push:
-    branches: [ main ]
+  # push:
+    # branches: [ main ]
   pull_request:    
     branches: [ main ]
-  schedule:
-    - cron: "0 0 * * *" 
+  # schedule: 
+    # - cron: "0 0 * * *" 
 jobs:
   schemata-score:
     name: Schemata score
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      pull-requests: write
-    # strategy:
-    #  fail-fast: false #if set to true, GitHub will cancel all in-progress and queued jobs if any job in the matrix fails.
+    # permissions:
+      # actions: read
+      # contents: read
+      # pull-requests: write
+    
     steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v3   
+      - name: Checkout PR repo
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-     
-      - name: Compute Schemata score
+
+      - name: Get changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            *.avro
+            *.json
+            *.proto
+            *.yaml
+            *.yml
+
+      - name: List all changed files
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          CODE=`curl --http1.1  --request GET --url 'https://03f9-2603-8080-1ef0-81f0-5024-8e6f-6a29-1618.ngrok.io/connect/v1/schema/table/score/domain/3?name=org.entities.Department' --header 'authorization: ${{ secrets.SCHEMATA_TOKEN }}' --header 'content-Type: application/json'`
-          echo $CODE 
-          if [ "$CODE"!="200" ];
-          then
-              echo "FAILURE"
-              exit 500
-          else
-              echo "SUCCESS"
-              exit 0
-          fi
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo ${{ github.event.pull_request.head.repo.full_name }} + "$file was changed"
+          done      
+
+
+      #- name: get_modified_files
+      #  id: diff
+      #  working-directory: './diff_files'
+      #  run: |
+
+
+     
+      #- name: Compute Schemata score
+      #  run: |
+      #    CODE=`curl --http1.1  --request GET --url 'https://03f9-2603-8080-1ef0-81f0-5024-8e6f-6a29-1618.ngrok.io/connect/v1/schema/table/score/domain/3?name=org.entities.Department' --header 'authorization: ${{ secrets.SCHEMATA_TOKEN }}' --header 'content-Type: application/json'`
+      #    echo $CODE 
+      #    if [ "$CODE"!="200" ];
+      #    then
+      #        echo "FAILURE"
+      #        exit 500
+      #    else
+      #        echo "SUCCESS"
+      #        exit 0
+      #    fi
